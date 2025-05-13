@@ -1,8 +1,9 @@
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory, session, request, render_template, redirect, url_for
 import os
 from flask_cors import CORS
 from pymongo import MongoClient
 import requests
+import bcrypt
 
 static_path = os.getenv('STATIC_PATH','static')
 template_path = os.getenv('TEMPLATE_PATH','templates')
@@ -39,6 +40,41 @@ def serve_frontend(path=''):
     if path != '' and os.path.exists(os.path.join(static_path,path)):
         return send_from_directory(static_path, path)
     return send_from_directory(template_path, 'index.html')
+
+##if logged in already go directly to the home page
+##@app.route('/')
+##def home():
+##    if 'username' in session:
+##        return "Welcome" + session['username']
+    
+@app.route('/login', methods=['POST'])
+def login():
+    users = mongo.db.users
+    exists = users.find_one({'name': request.form['username']})
+    ##username correct
+    if exists:
+        ##password correct
+        if bcrypt.hashpw(request.form['password'].encode('utf-8'), exists['password']) == exists['password'].encode('utf-8'):
+            session['username'] = request.form['username']
+            return redirect(url_for('index'))
+        return 'Password is incorrect'
+    return 'Username is incorrect'
+
+@app.route('/createaccount', methods=['POST', 'GET'])
+def createAccount():
+    if request.method == 'POST':
+        users = mongo.db.users
+        ##looks for username and password in the database
+        exists = users.find_one({'name' : request.form['username']})
+        if exists is None:
+            ##take the password input from the form and generate hash version to store
+            hashPassword = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
+            users.insert({'name' : request.form['username'], 'password' : hashPassword})
+            session['username'] = request.form['username']
+            ##redirect to home page
+            return redirect(url_for('index'))
+        return 'Username already exists'
+    return render_template('createaccount.html')
 
 @app.route("/test-mongo")
 def test_mongo():
