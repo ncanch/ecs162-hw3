@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import Date from "./Date.svelte";
   import logo from "./assets/NewYorkTimes.svg.png";
+  import Login from "./Login.svelte";
 
   interface Article {
     headline: { main: string };
@@ -59,6 +60,9 @@
       <a href="https://www.nytimes.com/">
         <img src={logo} alt="NYTLogo" />
       </a>
+    </div>
+    <div class="login-container">
+      <Login />
     </div>
   </nav>
 </header>

@@ -6,6 +6,8 @@ import requests
 
 static_path = os.getenv('STATIC_PATH','static')
 template_path = os.getenv('TEMPLATE_PATH','templates')
+api_key = os.getenv('NYT_API_KEY')
+
 # Mongo connection
 mongo_uri = os.getenv("MONGO_URI")
 mongo = MongoClient(mongo_uri)
