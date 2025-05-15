@@ -10,19 +10,19 @@
             account.innerHTML = "<strong>Account</strong>  &#9662"
         }
     }
+
 </script>
 
 
 <div class="top-right">
-    <button on:click={dropdownMenu} class="btn" id="dropbtn"><strong>Account</strong>  &#9662</button>
+  <!--
+  <button on:click={dropdownMenu} class="btn" id="dropbtn"><strong>Account</strong>  &#9662</button>
     <div id="dropdown-content">
         <p>rando@email.com</p>
         <button class="btn" id="logout-button">Log Out</button>
     </div>
-    
-    <!--
-    <button class="btn" id="login-button">LOG IN</button>
     -->
+    <a href="/login_page" id="login-button">LOG IN</a>
 </div>
 
 <style>
@@ -39,6 +39,11 @@
     color: white;
     background-color: #5c849c;
     font-size: 0.8rem;
+    text-decoration: none;
+    font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;
+    line-height: 2;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   #dropbtn {

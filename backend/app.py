@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory, session, render_template
 import os
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -35,12 +35,20 @@ def get_article():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+##@app.route('/')
+##@app.route('/<path:path>')
+##def serve_frontend(path=''):
+##    if path != '' and os.path.exists(os.path.join(static_path,path)):
+##        return send_from_directory(static_path, path)
+##    return send_from_directory(template_path, 'index.html')
+
 @app.route('/')
-@app.route('/<path:path>')
-def serve_frontend(path=''):
-    if path != '' and os.path.exists(os.path.join(static_path,path)):
-        return send_from_directory(static_path, path)
-    return send_from_directory(template_path, 'index.html')
+def home():
+    return render_template('index.html')
+
+@app.route('/login_page')
+def login():
+    return render_template('login_page.html')
 
 @app.route("/test-mongo")
 def test_mongo():
